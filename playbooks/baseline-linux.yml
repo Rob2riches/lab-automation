@@ -23,7 +23,7 @@
 
     - name: Deploy SSH banner from template
       ansible.builtin.template:
-        src: ../templates/banner.j2
+        src: banner.j2
         dest: /etc/issue.net
         owner: root
         group: root
