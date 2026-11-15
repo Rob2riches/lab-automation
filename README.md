@@ -1,5 +1,5 @@
 # lab-automation
-
+![Lint](https://github.com/Rob2riches/lab-automation/actions/workflows/lint.yml/badge.svg)
 Ansible automation for a small multi-host lab environment. Built to practise
 configuration management, patching and operational safety patterns against real
 hosts rather than slides.
