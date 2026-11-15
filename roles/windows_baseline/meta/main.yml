@@ -8,8 +8,7 @@ galaxy_info:
   platforms:
     - name: Windows
       versions:
-        - 2022
-        - 2025
+        - all
   galaxy_tags:
     - windows
     - baseline

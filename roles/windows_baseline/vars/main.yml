@@ -1,3 +1,2 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# vars file for windows_baseline
+# Internal variables for windows_baseline. Not intended to be overridden.

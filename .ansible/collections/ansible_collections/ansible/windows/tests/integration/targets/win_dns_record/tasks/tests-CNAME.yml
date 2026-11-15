@@ -1,0 +1,246 @@
+---
+- name: TYPE=CNAME - creation (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: www.ansible.com
+    type: CNAME
+  register: cmd_result
+  check_mode: true
+- name: TYPE=CNAME - creation get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - creation check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=CNAME - creation
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: www.ansible.com
+    type: CNAME
+  register: cmd_result
+- name: TYPE=CNAME - creation get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - creation check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["www.ansible.com."]
+- name: TYPE=CNAME - creation (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: www.ansible.com
+    type: CNAME
+  register: cmd_result
+- name: TYPE=CNAME - creation get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - creation check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["www.ansible.com."]
+- name: TYPE=CNAME - update address (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: docs.ansible.com
+    type: CNAME
+  register: cmd_result
+  check_mode: true
+- name: TYPE=CNAME - update address get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - update address check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["www.ansible.com."]
+- name: TYPE=CNAME - update address
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: docs.ansible.com
+    type: CNAME
+  register: cmd_result
+- name: TYPE=CNAME - update address get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - update address check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["docs.ansible.com."]
+- name: TYPE=CNAME - update address (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: docs.ansible.com
+    type: CNAME
+  register: cmd_result
+- name: TYPE=CNAME - update address get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - update address check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["docs.ansible.com."]
+- name: TYPE=CNAME - update TTL (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: docs.ansible.com
+    ttl: 7200
+    type: CNAME
+  register: cmd_result
+  check_mode: true
+- name: TYPE=CNAME - update TTL get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - update TTL check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="ttl") | list == [3600]
+- name: TYPE=CNAME - update TTL
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: docs.ansible.com
+    ttl: 7200
+    type: CNAME
+  register: cmd_result
+- name: TYPE=CNAME - update TTL get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - update TTL check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="ttl") | list == [7200]
+- name: TYPE=CNAME - update TTL (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    value: docs.ansible.com
+    ttl: 7200
+    type: CNAME
+  register: cmd_result
+- name: TYPE=CNAME - update TTL get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - update TTL check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="ttl") | list == [7200]
+- name: TYPE=CNAME - remove record (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+    state: absent
+  register: cmd_result
+  check_mode: true
+- name: TYPE=CNAME - remove record get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - remove record check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == true
+      - cmd_result_actual.records | length > 0
+- name: TYPE=CNAME - remove record
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+    state: absent
+  register: cmd_result
+- name: TYPE=CNAME - remove record get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - remove record check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=CNAME - remove record (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+    state: absent
+  register: cmd_result
+- name: TYPE=CNAME - remove record get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: test1
+    type: CNAME
+  register: cmd_result_actual
+- name: TYPE=CNAME - remove record check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: Issue 429 - creation
+  ansible.windows.win_dns_record:
+    name: helloworld.test
+    type: CNAME
+    value: myserver.example.com
+    zone: '{{ win_dns_record_zone }}'
+  register: cmd_result
+- name: Issue 429 - get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: helloworld.test
+    type: CNAME
+  register: cmd_result_actual
+- name: Issue 429 - creation check results"
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["myserver.example.com."]
