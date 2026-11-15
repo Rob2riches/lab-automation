@@ -24,7 +24,7 @@ jobs:
         run: yamllint .
 
       - name: Run ansible-lint
-        run: ansible-lint playbooks/
+        run: ansible-lint playbooks/ roles/
 
       - name: Syntax check all playbooks
         run: |

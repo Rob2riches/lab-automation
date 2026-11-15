@@ -1,0 +1,10 @@
+---
+admin_group: labadmins
+
+required_packages:
+  - vim
+  - curl
+  - htop
+  - rsync
+
+ssh_banner_path: /etc/issue.net

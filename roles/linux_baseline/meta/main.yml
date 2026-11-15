@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  role_name: linux_baseline
+  author: Robert Richards
+  description: Configuration baseline for Ubuntu hosts - admin group, required packages, SSH login banner
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
+  galaxy_tags:
+    - baseline
+    - configuration
+
+dependencies: []
