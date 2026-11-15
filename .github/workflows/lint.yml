@@ -28,6 +28,7 @@ jobs:
 
       - name: Syntax check all playbooks
         run: |
-          ansible-playbook playbooks/baseline-linux.yml --syntax-check
-          ansible-playbook playbooks/patch-linux.yml --syntax-check
-          ansible-playbook playbooks/site.yml --syntax-check
+          for playbook in playbooks/*.yml; do
+            echo "Checking $playbook"
+            ansible-playbook "$playbook" --syntax-check
+          done
