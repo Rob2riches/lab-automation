@@ -20,7 +20,7 @@ pinned in `ansible.cfg` rather than left to discovery.
     ansible.cfg              Inventory path, interpreter pin, host key policy
     inventory/hosts.yml      Static inventory, grouped
     playbooks/               Playbooks
-    templates/               Jinja2 templates
+    playbooks/templates/     Jinja2 templates
 
 ## Usage
 
