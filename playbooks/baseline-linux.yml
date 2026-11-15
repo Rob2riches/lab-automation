@@ -1,51 +1,51 @@
 ---
 - name: Apply Linux configuration baseline
-   hosts: linux
-   become: true
-   vars:
-     admin_group: labadmins
-     required_packages:
-       - vim
-       - curl
-       - htop
-       - rsync
+  hosts: linux
+  become: true
+  vars:
+    admin_group: labadmins
+    required_packages:
+      - vim
+      - curl
+      - htop
+      - rsync
 
-   tasks:
-     - name: Ensure admin group exists
-       ansible.builtin.group:
-         name: "{{ admin_group }}"
+  tasks:
+    - name: Ensure admin group exists
+      ansible.builtin.group:
+        name: "{{ admin_group }}"
+        state: present
 
-     - name: Install required packages
-       ansible.builtin.package:
-         name: "{{ required_packages }}"
-         state: present
+    - name: Install required packages
+      ansible.builtin.package:
+        name: "{{ required_packages }}"
+        state: present
 
-     - name: Deploy SSH banner from template
-       ansible.builtin.template:
-         src: ../templates/banner.j2
-         dest: /etc/issue.net
-         owner: root
-         group: root
-         mode: "0644"
-       notify: Restart ssh
+    - name: Deploy SSH banner from template
+      ansible.builtin.template:
+        src: ../templates/banner.j2
+        dest: /etc/issue.net
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart ssh
 
-     - name: Enforce SSH banner setting
-       ansible.builtin.lineinfile:
-         path: /etc/ssh/sshd_config
-         regexp: '^#?Banner'
-         line: 'Banner /etc/issue.net'
-         validate: '/usr/sbin/sshd -t -f %s'
-       notify: Restart ssh
+    - name: Enforce SSH banner setting
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?Banner'
+        line: 'Banner /etc/issue.net'
+        validate: '/usr/sbin/sshd -t -f %s'
+      notify: Restart ssh
 
-     - name: Ensure ssh is running and enabled
-       ansible.builtin.service:
-         name: ssh
-         state: started
-         enabled: true
+    - name: Ensure ssh is running and enabled
+      ansible.builtin.service:
+        name: ssh
+        state: started
+        enabled: true
 
-
-   handlers:
-     - name: Restart ssh
-       ansible.builtin.service:
-         name: ssh
-         state: restarted
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
