@@ -1,18 +1,18 @@
 ---
 - name: Ensure admin group exists
   ansible.builtin.group:
-    name: "{{ admin_group }}"
+    name: "{{ linux_baseline_admin_group }}"
     state: present
 
 - name: Install required packages
   ansible.builtin.package:
-    name: "{{ required_packages }}"
+    name: "{{ linux_baseline_required_packages }}"
     state: present
 
 - name: Deploy SSH banner from template
   ansible.builtin.template:
     src: banner.j2
-    dest: "{{ ssh_banner_path }}"
+    dest: "{{ linux_baseline_ssh_banner_path }}"
     owner: root
     group: root
     mode: "0644"
@@ -22,7 +22,7 @@
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?Banner'
-    line: "Banner {{ ssh_banner_path }}"
+    line: "Banner {{ linux_baseline_ssh_banner_path }}"
     validate: '/usr/sbin/sshd -t -f %s'
   notify: Restart ssh
 

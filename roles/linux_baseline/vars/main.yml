@@ -1,3 +1,2 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# vars file for linux_baseline
+# Internal variables for linux_baseline. Not intended to be overridden.
