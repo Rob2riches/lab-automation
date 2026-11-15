@@ -1,0 +1,37 @@
+---
+- name: Ensure local group exists
+  ansible.windows.win_group:
+    name: "{{ windows_baseline_admin_group }}"
+    description: Lab administrators, managed by Ansible
+    state: present
+
+- name: Ensure configuration directory exists
+  ansible.windows.win_file:
+    path: "{{ windows_baseline_config_dir }}"
+    state: directory
+
+- name: Deploy host information file from template
+  ansible.windows.win_template:
+    src: hostinfo.txt.j2
+    dest: "{{ windows_baseline_config_dir }}\\hostinfo.txt"
+
+- name: Set logon banner caption
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: legalnoticecaption
+    data: "{{ windows_baseline_logon_caption }}"
+    type: string
+
+- name: Set logon banner text
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: legalnoticetext
+    data: "{{ windows_baseline_logon_text }}"
+    type: string
+
+- name: Ensure required services are running and set to automatic
+  ansible.windows.win_service:
+    name: "{{ item }}"
+    state: started
+    start_mode: auto
+  loop: "{{ windows_baseline_services }}"

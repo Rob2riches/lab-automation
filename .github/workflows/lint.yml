@@ -8,9 +8,14 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    env:
+      ANSIBLE_VAULT_PASSWORD_FILE: .vault_pass
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
+
+      - name: Write vault password from repository secret
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
 
       - name: Set up Python
         uses: actions/setup-python@v5
