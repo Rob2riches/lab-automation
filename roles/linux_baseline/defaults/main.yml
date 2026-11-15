@@ -1,0 +1,10 @@
+---
+linux_baseline_admin_group: labadmins
+
+linux_baseline_required_packages:
+  - vim
+  - curl
+  - htop
+  - rsync
+
+linux_baseline_ssh_banner_path: /etc/issue.net
