@@ -1,0 +1,10 @@
+---
+# Master playbook. Runs the full configuration run in order.
+#   ansible-playbook playbooks/site.yml --check --diff
+#   ansible-playbook playbooks/site.yml
+
+- name: Configuration baseline
+  ansible.builtin.import_playbook: baseline-linux.yml
+
+- name: Patching
+  ansible.builtin.import_playbook: patch-linux.yml
