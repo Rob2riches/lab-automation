@@ -1,0 +1,353 @@
+---
+- name: TYPE=NS - creation (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-mirror.example.com
+    type: NS
+  register: cmd_result
+  check_mode: true
+- name: TYPE=NS - creation get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - creation check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=NS- creation
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-mirror.example.com
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - creation get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - creation check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-mirror.example.com."]
+- name: TYPE=NS - creation (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-mirror.example.com
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - creation get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - creation check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-mirror.example.com."]
+- name: TYPE=NS - update address (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-altmirror.example.com
+    type: NS
+  register: cmd_result
+  check_mode: true
+- name: TYPE=NS - update address get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - update address check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-mirror.example.com."]
+- name: TYPE=NS - update address
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-altmirror.example.com
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - update address get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - update address check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-altmirror.example.com."]
+- name: TYPE=NS - update address (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-altmirror.example.com
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - update address get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - update address check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-altmirror.example.com."]
+- name: TYPE=NS - update TTL (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-altmirror.example.com
+    ttl: 7200
+    type: NS
+  register: cmd_result
+  check_mode: true
+- name: TYPE=NS - update TTL get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - update TTL check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="ttl") | list == [3600]
+- name: TYPE=NS - update TTL
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-altmirror.example.com
+    ttl: 7200
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - update TTL get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - update TTL check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="ttl") | list == [7200]
+- name: TYPE=NS - update TTL (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value: ansible-altmirror.example.com
+    ttl: 7200
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - update TTL get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - update TTL check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="ttl") | list == [7200]
+- name: TYPE=NS - remove record (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+    state: absent
+  register: cmd_result
+  check_mode: true
+- name: TYPE=NS - remove record get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - remove record check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == true
+      - cmd_result_actual.records | length > 0
+- name: TYPE=NS - remove record
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+    state: absent
+  register: cmd_result
+- name: TYPE=NS - remove record get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - remove record check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=NS - remove record (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+    state: absent
+  register: cmd_result
+- name: TYPE=NS - remove record get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - remove record check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=NS - creation with multiple values (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value:
+      - ansible-mirror.example.com
+      - ansible-altmirror.example.com
+      - ansiblull-mirror.example.com
+    type: NS
+  register: cmd_result
+  check_mode: true
+- name: TYPE=NS - creation get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - creation check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=NS - creation with multiple values
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value:
+      - ansible-mirror.example.com
+      - ansible-altmirror.example.com
+      - ansiblull-mirror.example.com
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - creation get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - creation check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-altmirror.example.com.", "ansible-mirror.example.com.",
+        "ansiblull-mirror.example.com."]
+- name: TYPE=NS - creation with multiple values (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    value:
+      - ansible-mirror.example.com
+      - ansible-altmirror.example.com
+      - ansiblull-mirror.example.com
+    type: NS
+  register: cmd_result
+- name: TYPE=NS - creation get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - creation check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.records | map(attribute="record_values") | flatten | sort == ["ansible-altmirror.example.com.", "ansible-mirror.example.com.",
+        "ansiblull-mirror.example.com."]
+- name: TYPE=NS - remove record (check mode)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+    state: absent
+  register: cmd_result
+  check_mode: true
+- name: TYPE=NS - remove record get results (check mode)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - remove record check results (check mode)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == true
+      - cmd_result_actual.records | length > 0
+- name: TYPE=NS - remove record
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+    state: absent
+  register: cmd_result
+- name: TYPE=NS - remove record get results
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - remove record check results
+  ansible.builtin.assert:
+    that:
+      - cmd_result is changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0
+- name: TYPE=NS - remove record (idempotent)
+  ansible.windows.win_dns_record:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+    state: absent
+  register: cmd_result
+- name: TYPE=NS - remove record get results (idempotent)
+  ansible.windows.win_dns_record_info:
+    zone: '{{ win_dns_record_zone }}'
+    name: z
+    type: NS
+  register: cmd_result_actual
+- name: TYPE=NS - remove record check results (idempotent)
+  ansible.builtin.assert:
+    that:
+      - cmd_result is not changed
+      - cmd_result_actual.exists == false
+      - cmd_result_actual.records | length == 0

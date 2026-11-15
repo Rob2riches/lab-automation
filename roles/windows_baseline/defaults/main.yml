@@ -1,0 +1,13 @@
+---
+windows_baseline_admin_group: LabAdmins
+
+windows_baseline_config_dir: C:\LabConfig
+
+windows_baseline_logon_caption: Authorized use only
+
+windows_baseline_logon_text: >-
+  This system is managed by Ansible.
+  Access is restricted to authorized users.
+
+windows_baseline_services:
+  - W32Time

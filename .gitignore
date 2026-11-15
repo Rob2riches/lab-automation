@@ -1,4 +1,5 @@
 *.retry
 *.log
 .vault_pass
+.ansible/
 reports/
