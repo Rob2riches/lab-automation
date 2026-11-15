@@ -1,5 +1,5 @@
 ---
--  name: Apply Linux configuration baseline
+- name: Apply Linux configuration baseline
    hosts: linux
    become: true
    vars:
